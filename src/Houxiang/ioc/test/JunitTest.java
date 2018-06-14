@@ -1,8 +1,6 @@
 package Houxiang.ioc.test;
 
-import java.lang.reflect.InvocationTargetException;
 
-import org.dom4j.DocumentException;
 import org.junit.Test;
 
 import HSpring.aop.test.TargetBeanImp;

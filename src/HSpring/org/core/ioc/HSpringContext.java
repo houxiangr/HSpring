@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.dom4j.DocumentException;
-import org.junit.internal.Throwables;
 
 import HSpring.org.config.ImportConfig;
 import HSpring.org.core.aop.MethodImp;
@@ -33,11 +31,7 @@ public class HSpringContext implements BeanFactory{
 			//System.out.println(bean.getKey() + ":" + bean.getValue());
 			if(bean.getValue().getScope()==Bean.SINGLETON) {
 				Object beanObject=createBeanObject(bean.getValue());
-				if(context.get(bean.getKey())!=null) {
-					throw new Exception("配置文件中有相同Id的bean");
-				}else {
-					context.put(bean.getKey(), beanObject);
-				}
+				context.put(bean.getKey(), beanObject);
 			}
 		}
 	}

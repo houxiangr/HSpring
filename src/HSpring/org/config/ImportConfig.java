@@ -97,8 +97,10 @@ public class ImportConfig{
 					//获取一组代理方法的Bean的id
 					if(attrkey.equals("type")) {
 						if(attrvalue.equals("proxyList")) {
+							@SuppressWarnings("unchecked")
 							List<Element> ListNodes=propertyNode.elements("ref");
 							for(Element ListNode:ListNodes) {
+								@SuppressWarnings("unchecked")
 								List<Attribute> Listattrs=ListNode.attributes();
 								for (Attribute refAttr : Listattrs) {
 									String proxyattrkey=refAttr.getName();

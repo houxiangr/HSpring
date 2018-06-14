@@ -1,8 +1,6 @@
 package HSpring.aop.test;
 
-import java.lang.reflect.InvocationTargetException;
 
-import org.dom4j.DocumentException;
 import org.junit.Test;
 
 import HSpring.org.core.ioc.BeanFactory;
