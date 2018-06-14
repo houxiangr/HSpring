@@ -12,9 +12,7 @@ import HSpring.org.core.ioc.HSpringContext;
 public class JunitTest {
 
 	@Test
-	public void test() throws ClassNotFoundException, 
-	InstantiationException, IllegalAccessException, 
-	InvocationTargetException, DocumentException {
+	public void test() throws Exception {
 		/*BeanFactory bf = new HSpringContext("HSpring.xml");
 		BeanA a = (BeanA) bf.getBean("BeanA");
 		System.out.println(a.getProperty1());
@@ -23,7 +21,7 @@ public class JunitTest {
 		System.out.println(b.getPropertyA());
 		System.out.println(b.getProperty2());*/
 		BeanFactory bf = new HSpringContext("HSpring.xml");
-		TargetBeanImp temp=(TargetBeanImp)bf.getBean("targetBeanProxy");
+		TargetBeanImp temp=(TargetBeanImp)bf.getBean("targetBeanProxy3");
 		temp.show("houxiang");
 	}
 }

@@ -29,7 +29,7 @@ public class ImportConfig{
 	}
 	//解析xml方法
 	@SuppressWarnings("null")
-	public static Map<String,Bean> parseXmlToBeanList(String xmlName) throws DocumentException{
+	public static Map<String,Bean> parseXmlToBeanList(String xmlName) throws Exception{
 		Map<String,Bean> beans = new HashMap<String,Bean>();
 		//创建SAXReader对象
 		SAXReader reader=new SAXReader();
@@ -123,13 +123,18 @@ public class ImportConfig{
 			if(scope.equals("prototype")) {
 				bean.setScope(Bean.PROTOTYPE);
 			}
-			beans.put(bean.getId(),bean);
+			//如果配置文件中有两个bean的Id一样则抛异常
+			if(beans.get(bean.getId())!=null) {
+				throw new Exception("配置文件中有相同Id的bean");
+			}else {
+				beans.put(bean.getId(),bean);
+			}
 		}
 		return beans;
 	}
 	//获取xml配置的测试方法
 	@Test
-	public void test() {
+	public void test() throws Exception {
 		Map<String,Bean> beans=null;
 		try {
 			beans=parseXmlToBeanList("HSpring.xml");

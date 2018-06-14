@@ -1,6 +1,5 @@
 package HSpring.org.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //配置文件中Property的实体类

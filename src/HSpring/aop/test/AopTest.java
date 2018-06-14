@@ -10,9 +10,7 @@ import HSpring.org.core.ioc.HSpringContext;
 
 public class AopTest {
 	@Test
-	public void testJdkProxy() throws ClassNotFoundException, 
-	InstantiationException, IllegalAccessException, 
-	InvocationTargetException, DocumentException {
+	public void testJdkProxy() throws Exception {
 		/*BeanFactory bf = new HSpringContext("HSpring.xml");
         TargetBeanImp targetImp = (TargetBeanImp) bf.getBean("targetBeanProxy");
         //解开下面注释会多执行一次前置函数

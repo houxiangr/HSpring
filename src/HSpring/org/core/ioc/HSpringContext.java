@@ -9,10 +9,13 @@ import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.dom4j.DocumentException;
+import org.junit.internal.Throwables;
 
 import HSpring.org.config.ImportConfig;
 import HSpring.org.core.aop.MethodImp;
 import HSpring.org.core.aop.ProxyBeanFactory;
+import HSpring.org.core.aop.RunAfterMethod;
+import HSpring.org.core.aop.RunAroundMethod;
 import HSpring.org.core.aop.RunBeforeMethod;
 import HSpring.org.entity.Bean;
 import HSpring.org.entity.Property;
@@ -24,15 +27,17 @@ public class HSpringContext implements BeanFactory{
 	private Map<String,Bean> configBean=new HashMap<String,Bean>();
 	//通过构造方法传入配置信息
 	//将Bean的scope为singleton的bean创建出来放入容器
-	public HSpringContext(String xmlName) throws DocumentException, 
-	ClassNotFoundException, InstantiationException, 
-	IllegalAccessException, InvocationTargetException{
+	public HSpringContext(String xmlName) throws Exception{
 		configBean=ImportConfig.parseXmlToBeanList(xmlName);
 		for(Entry<String, Bean> bean:configBean.entrySet()) {
 			//System.out.println(bean.getKey() + ":" + bean.getValue());
 			if(bean.getValue().getScope()==Bean.SINGLETON) {
 				Object beanObject=createBeanObject(bean.getValue());
-				context.put(bean.getKey(), beanObject);
+				if(context.get(bean.getKey())!=null) {
+					throw new Exception("配置文件中有相同Id的bean");
+				}else {
+					context.put(bean.getKey(), beanObject);
+				}
 			}
 		}
 	}
@@ -50,6 +55,14 @@ public class HSpringContext implements BeanFactory{
 		if(bean.getProxyType().equals("before")) {
 			Map<String,MethodImp> proxymp=new HashMap<String,MethodImp>();
 			proxymp.put("interceptor", new RunBeforeMethod());
+			BeanUtils.copyProperties( aimBeanObject, proxymp);
+		}else if(bean.getProxyType().equals("after")) {
+			Map<String,MethodImp> proxymp=new HashMap<String,MethodImp>();
+			proxymp.put("interceptor",  new RunAfterMethod());
+			BeanUtils.copyProperties( aimBeanObject, proxymp);
+		}else if(bean.getProxyType().equals("around")) {
+			Map<String,MethodImp> proxymp=new HashMap<String,MethodImp>();
+			proxymp.put("interceptor",  new RunAroundMethod());
 			BeanUtils.copyProperties( aimBeanObject, proxymp);
 		}
 		//获得bean中的property配置项的信息

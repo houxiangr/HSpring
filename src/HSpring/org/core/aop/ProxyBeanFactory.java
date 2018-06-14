@@ -33,8 +33,6 @@ public class ProxyBeanFactory implements MethodInterceptor{
 	public void setTargetInterface(String targetInterface) {
 		this.targetInterface = targetInterface;
 	}
-	
-	
 	public List<Object> getAdviceName() {
 		return adviceName;
 	}
@@ -64,7 +62,6 @@ public class ProxyBeanFactory implements MethodInterceptor{
                     public Object invoke(Object proxy, Method method, Object[] args) 
                     		throws Throwable {
                     	Object result=null;
-                        //判断该通知在方法调用前执行
                     	result=interceptor.intercept(targetBean, method, args, null,adviceName);
                     	return result;
                     }

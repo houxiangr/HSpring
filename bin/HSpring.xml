@@ -9,14 +9,21 @@
 		<property name="property2" value="houxiangB2"></property>
 	</bean> -->
 	
-	
  	<!-- Jdk代理实现目标对象 -->
 	<bean id="targetBean" class="HSpring.aop.test.TargetBean"></bean>
 	<!-- 前置通知对象1 -->
 	<bean id="beforeAdvice" class="HSpring.aop.test.BeforeAdvice"></bean>
 	<!-- 前置通知对象2 -->
 	<bean id="beforeAdvice2" class="HSpring.aop.test.BeforeAdvice2"></bean>
-	<!-- jdk代理对象 -->
+	<!-- 后置通知对象1 -->
+	<bean id="afterAdvice" class="HSpring.aop.test.AfterAdvice"></bean>
+	<!-- 后置通知对象2 -->
+	<bean id="afterAdvice2" class="HSpring.aop.test.AfterAdvice2"></bean>
+	<!-- 环绕通知对象1 -->
+	<bean id="aroundAdvice" class="HSpring.aop.test.AroundAdvice"></bean>
+	<!-- 环绕通知对象2 -->
+	<bean id="aroundAdvice2" class="HSpring.aop.test.AroundAdvice2"></bean>
+	<!-- jdk前置代理对象 -->
 	<bean id="targetBeanProxy" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="before">
 		<property  name="targetBean" ref="targetBean"></property>
 		<!-- value只能用字符串的形式，接口不能实例化 -->
@@ -24,6 +31,26 @@
 		<property  name="adviceName" type="proxyList">
 			<ref bean="beforeAdvice"></ref>
 			<ref bean="beforeAdvice2"></ref>
+		</property>
+	</bean>
+	<!-- jdk后置代理对象 -->
+	<bean id="targetBeanProxy2" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="after">
+		<property  name="targetBean" ref="targetBean"></property>
+		<!-- value只能用字符串的形式，接口不能实例化 -->
+		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
+		<property  name="adviceName" type="proxyList">
+			<ref bean="afterAdvice"></ref>
+			<ref bean="afterAdvice2"></ref>
+		</property>
+	</bean>
+	<!-- jdk环绕代理对象 -->
+	<bean id="targetBeanProxy3" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="around">
+		<property  name="targetBean" ref="targetBean"></property>
+		<!-- value只能用字符串的形式，接口不能实例化 -->
+		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
+		<property  name="adviceName" type="proxyList">
+			<ref bean="aroundAdvice"></ref>
+			<ref bean="aroundAdvice2"></ref>
 		</property>
 	</bean>
 	<!-- Cglib代理实现目标对象 -->
