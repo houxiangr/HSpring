@@ -3,6 +3,7 @@ package HSpring.org.core.aop;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -11,8 +12,15 @@ import net.sf.cglib.proxy.MethodProxy;
 public class ProxyBeanFactory implements MethodInterceptor{
 	private Object targetBean=null;
 	private String targetInterface=null;
-	private Object adviceName=null;
+	private List<Object> adviceName=null;
+	private MethodImp interceptor=null;
 
+	public MethodImp getInterceptor() {
+		return interceptor;
+	}
+	public void setInterceptor(MethodImp interceptor) {
+		this.interceptor = interceptor;
+	}
 	public Object getTargetBean() {
 		return targetBean;
 	}
@@ -25,10 +33,12 @@ public class ProxyBeanFactory implements MethodInterceptor{
 	public void setTargetInterface(String targetInterface) {
 		this.targetInterface = targetInterface;
 	}
-	public Object getAdviceName() {
+	
+	
+	public List<Object> getAdviceName() {
 		return adviceName;
 	}
-	public void setAdviceName(Object adviceName) {
+	public void setAdviceName(List<Object> adviceName) {
 		this.adviceName = adviceName;
 	}
 	public Object createProxy() {
@@ -55,12 +65,7 @@ public class ProxyBeanFactory implements MethodInterceptor{
                     		throws Throwable {
                     	Object result=null;
                         //判断该通知在方法调用前执行
-                    	if(adviceName instanceof MethodBeforeAdvice) {
-                    		//执行前置通知
-                        	((MethodBeforeAdvice) adviceName).before(method, args,targetBean);
-                        	//执行方法
-                        	result=method.invoke(targetBean, args);
-                        }
+                    	result=interceptor.intercept(targetBean, method, args, null,adviceName);
                     	return result;
                     }
                 });
@@ -80,14 +85,10 @@ public class ProxyBeanFactory implements MethodInterceptor{
 	@Override
     public Object intercept(Object obj, Method method,
     		Object[] args, MethodProxy proxy) throws Throwable {
-		if(adviceName instanceof MethodBeforeAdvice) {
-    		//执行前置通知
-        	((MethodBeforeAdvice) adviceName).before(method, args,targetBean);
-        }
-        //执行目标对象的方法
-        Object returnValue = method.invoke(targetBean, args);
-
-        return returnValue;
+		Object result=null;
+        //判断该通知在方法调用前执行
+    	result=interceptor.intercept(targetBean, method, args, null,adviceName);
+    	return result;
     }
 }
 

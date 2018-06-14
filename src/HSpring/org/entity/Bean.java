@@ -10,19 +10,28 @@ public class Bean {
 	//配置文件中Bean元素的一些属性
 	private String id;
 	private String beanClass;
+	private String proxyType;
 	//scope默认设置为单例模式
 	private int scope=SINGLETON;
 	private List<Property> propertys;
-	public Bean(String id, String beanClass, List<Property> propertys) {
+	public Bean(String id, String beanClass, List<Property> propertys,String proxyType) {
 		this.id = id;
 		this.beanClass = beanClass;
 		this.propertys = propertys;
+		this.proxyType=proxyType;
 	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getProxyType() {
+		return proxyType;
+	}
+	public void setProxyType(String proxyType) {
+		this.proxyType = proxyType;
 	}
 	public String getBeanClass() {
 		return beanClass;

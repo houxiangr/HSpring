@@ -1,10 +1,21 @@
 package HSpring.org.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 //配置文件中Property的实体类
 public class Property {
 	//配置文件中property元素的一些属性
-	private String name="";
-	private String ref="";
-	private String value="";
+	private String name=null;
+	private String ref=null;
+	private String value=null;
+	private List<String> proxyList=null;
+	public List<String> getProxyList() {
+		return proxyList;
+	}
+	public void setProxyList(List<String> proxyList) {
+		this.proxyList = proxyList;
+	}
 	public Property(String name, String ref,String value) {
 		this.name = name;
 		this.ref = ref;

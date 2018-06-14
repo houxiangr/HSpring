@@ -1,4 +1,4 @@
-package HSpring.org.config;
+ package HSpring.org.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class ImportConfig{
 		//创建SAXReader对象
 		SAXReader reader=new SAXReader();
 		//拼接xml路径
-		StringBuffer XmlUrl=new StringBuffer("D:\\workspace\\HSpring\\conf\\");
+		StringBuffer XmlUrl=new StringBuffer("E:\\GitHub\\HSpring\\conf\\");
 		XmlUrl.append(xmlName);
 		//读入xml文件
 		Document doc=reader.read(XmlUrl.toString());
@@ -46,6 +46,7 @@ public class ImportConfig{
 			String id="";
 			String beanClass="";
 			String scope="";
+			String proxyType="";
 			List<Property> propertys=new ArrayList<Property>();
 			@SuppressWarnings("unchecked")
 			List<Attribute> beanattrs=BeanNode.attributes();
@@ -62,6 +63,10 @@ public class ImportConfig{
 					break;
 				case "scope":
 					scope=attrvalue;
+					break;
+				case "proxyType":
+					proxyType=attrvalue;
+					break;
 				}
 			}
 			@SuppressWarnings("unchecked")
@@ -70,8 +75,10 @@ public class ImportConfig{
 				String name="";
 				String ref="";
 				String value="";
+				List<String> proxyBeans=new ArrayList<String>();
 				@SuppressWarnings("unchecked")
 				List<Attribute> properattrs=propertyNode.attributes();
+				//获取常见属性并赋值
 				for (Attribute attr : properattrs) {  
 					String attrkey=attr.getName();
 					String attrvalue=attr.getValue();
@@ -84,12 +91,34 @@ public class ImportConfig{
 						break;
 					case "value":
 						value=attrvalue;
+						break;
+					}
+					//如果包含type属性则分析type属性
+					//获取一组代理方法的Bean的id
+					if(attrkey.equals("type")) {
+						if(attrvalue.equals("proxyList")) {
+							List<Element> ListNodes=propertyNode.elements("ref");
+							for(Element ListNode:ListNodes) {
+								List<Attribute> Listattrs=ListNode.attributes();
+								for (Attribute refAttr : Listattrs) {
+									String proxyattrkey=refAttr.getName();
+									String proxyattrvalue=refAttr.getValue();
+									switch(proxyattrkey) {
+									case "bean":
+										proxyBeans.add(proxyattrvalue);
+										break;
+									}
+								}
+								
+							}
+						}
 					}
 				}
 				Property tempProperty=new Property(name,ref,value);
+				tempProperty.setProxyList(proxyBeans);
 				propertys.add(tempProperty);
 			}
-			Bean bean=new Bean(id,beanClass,propertys);
+			Bean bean=new Bean(id,beanClass,propertys,proxyType);
 			//如果scope为prototype重新设置
 			if(scope.equals("prototype")) {
 				bean.setScope(Bean.PROTOTYPE);
@@ -109,7 +138,11 @@ public class ImportConfig{
 			e.printStackTrace();
 		}
 		for(Entry<String, Bean> bean:beans.entrySet()) {
-			 System.out.println(bean.getKey() + ":" + bean.getValue());
+//			 System.out.println(bean.getKey() + ":" + bean.getValue());
+			 //System.out.println(bean.getValue().getPropertys());
+			 for(Property pro:bean.getValue().getPropertys()) {
+				 System.out.println(pro.getProxyList());
+			 }
 		}
 	}
 }

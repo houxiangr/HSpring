@@ -12,19 +12,29 @@
 	
  	<!-- Jdk代理实现目标对象 -->
 	<bean id="targetBean" class="HSpring.aop.test.TargetBean"></bean>
-	<!-- 前置通知对象 -->
+	<!-- 前置通知对象1 -->
 	<bean id="beforeAdvice" class="HSpring.aop.test.BeforeAdvice"></bean>
-	<!-- 代理对象 -->
-	<bean id="targetBeanProxy" class="HSpring.org.core.aop.ProxyBeanFactory">
+	<!-- 前置通知对象2 -->
+	<bean id="beforeAdvice2" class="HSpring.aop.test.BeforeAdvice2"></bean>
+	<!-- jdk代理对象 -->
+	<bean id="targetBeanProxy" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="before">
 		<property  name="targetBean" ref="targetBean"></property>
 		<!-- value只能用字符串的形式，接口不能实例化 -->
 		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
-		<property  name="adviceName" ref="beforeAdvice"></property>
+		<property  name="adviceName" type="proxyList">
+			<ref bean="beforeAdvice"></ref>
+			<ref bean="beforeAdvice2"></ref>
+		</property>
 	</bean>
 	<!-- Cglib代理实现目标对象 -->
-	<bean id="cglibtargetBean" class="HSpring.aop.test.CglibTargetBean"></bean>
-	<bean id="cglibBeanProxy" class="HSpring.org.core.aop.ProxyBeanFactory">
+	 <bean id="cglibtargetBean" class="HSpring.aop.test.CglibTargetBean">
+		<property name="test" value="aaa"></property>
+	</bean>
+	<bean id="cglibBeanProxy" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="before">
 		<property name="targetBean" ref="cglibtargetBean"></property>
-		<property name="adviceName" ref="beforeAdvice"></property>
+		<property name="adviceName" type="proxyList">
+			<ref bean="beforeAdvice"></ref>
+			<ref bean="beforeAdvice2"></ref>
+		</property>
 	</bean>
 </beans>
