@@ -8,7 +8,14 @@ public class Property {
 	private String name=null;
 	private String ref=null;
 	private String value=null;
+	private List<String> method=null;
 	private List<String> proxyList=null;
+	public List<String> getMethod() {
+		return method;
+	}
+	public void setMethod(List<String> method) {
+		this.method = method;
+	}
 	public List<String> getProxyList() {
 		return proxyList;
 	}

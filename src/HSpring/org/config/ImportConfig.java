@@ -75,6 +75,7 @@ public class ImportConfig{
 				String name="";
 				String ref="";
 				String value="";
+				List<String> methods=new ArrayList<String>();
 				List<String> proxyBeans=new ArrayList<String>();
 				@SuppressWarnings("unchecked")
 				List<Attribute> properattrs=propertyNode.attributes();
@@ -113,11 +114,32 @@ public class ImportConfig{
 								}
 								
 							}
+						}else if(attrvalue.equals("methodList")) {
+							@SuppressWarnings("unchecked")
+							List<Element> ListNodes=propertyNode.elements("method");
+							for(Element ListNode:ListNodes) {
+								@SuppressWarnings("unchecked")
+								List<Attribute> Listattrs=ListNode.attributes();
+								for (Attribute methodAttr : Listattrs) {
+									String methodattrkey=methodAttr.getName();
+									String methodattrvalue=methodAttr.getValue();
+									switch(methodattrkey) {
+									case "methodname":
+										methods.add(methodattrvalue);
+										break;
+									}
+								}
+							}
 						}
 					}
 				}
 				Property tempProperty=new Property(name,ref,value);
-				tempProperty.setProxyList(proxyBeans);
+				if(proxyBeans.size()!=0) {
+					tempProperty.setProxyList(proxyBeans);
+				}
+				if(methods.size()!=0) {
+					tempProperty.setMethod(methods);
+				}
 				propertys.add(tempProperty);
 			}
 			Bean bean=new Bean(id,beanClass,propertys,proxyType);

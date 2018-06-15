@@ -19,7 +19,8 @@ public class JunitTest {
 		System.out.println(b.getPropertyA());
 		System.out.println(b.getProperty2());*/
 		BeanFactory bf = new HSpringContext("HSpring.xml");
-		TargetBeanImp temp=(TargetBeanImp)bf.getBean("targetBeanProxy3");
+		TargetBeanImp temp=(TargetBeanImp)bf.getBean("targetBeanProxy");
 		temp.show("houxiang");
+		temp.show2("houxiang2");
 	}
 }

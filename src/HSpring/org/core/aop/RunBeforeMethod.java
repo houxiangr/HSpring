@@ -10,14 +10,17 @@ public class RunBeforeMethod implements MethodImp {
 
 	@Override
 	public Object intercept(Object obj, Method method, Object[] args, 
-			MethodProxy proxy, List<Object> advices)
-			throws Throwable {
-		for(Object advice:advices) {
-             // 在目标方法执行前执行前置通知代码
-             ((MethodBeforeAdvice)advice).before(method, args, obj);
-		}
+			MethodProxy proxy, List<Object> advices,List<String> methodsList)throws Throwable {
 		Object result=null;
-		result = method.invoke(obj, args);
+		if(methodsList.contains(method.getName())) {
+			for(Object advice:advices) {
+	             // 在目标方法执行前执行前置通知代码
+	             ((MethodBeforeAdvice)advice).before(method, args, obj);
+			}
+			result = method.invoke(obj, args);
+		}else {
+			result = method.invoke(obj, args);
+		}
 		return result;
 	}
 

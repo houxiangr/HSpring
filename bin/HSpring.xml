@@ -25,7 +25,9 @@
 	<bean id="aroundAdvice2" class="HSpring.aop.test.AroundAdvice2"></bean>
 	<!-- jdk前置代理对象 -->
 	<bean id="targetBeanProxy" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="before">
-		<property  name="targetBean" ref="targetBean"></property>
+		<property  name="targetBean" ref="targetBean" type="methodList">
+			<method methodname="show"></method>
+		</property>
 		<!-- value只能用字符串的形式，接口不能实例化 -->
 		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
 		<property  name="adviceName" type="proxyList">
@@ -35,7 +37,7 @@
 	</bean>
 	<!-- jdk后置代理对象 -->
 	<bean id="targetBeanProxy2" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="after">
-		<property  name="targetBean" ref="targetBean"></property>
+		<property  name="targetBean" ref="targetBean" method="show"></property>
 		<!-- value只能用字符串的形式，接口不能实例化 -->
 		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
 		<property  name="adviceName" type="proxyList">
@@ -45,7 +47,7 @@
 	</bean>
 	<!-- jdk环绕代理对象 -->
 	<bean id="targetBeanProxy3" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="around">
-		<property  name="targetBean" ref="targetBean"></property>
+		<property  name="targetBean" ref="targetBean" method="show"></property>
 		<!-- value只能用字符串的形式，接口不能实例化 -->
 		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
 		<property  name="adviceName" type="proxyList">
@@ -57,11 +59,30 @@
 	 <bean id="cglibtargetBean" class="HSpring.aop.test.CglibTargetBean">
 		<property name="test" value="aaa"></property>
 	</bean>
+	<!-- Cglib前置代理对象 -->
 	<bean id="cglibBeanProxy" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="before">
 		<property name="targetBean" ref="cglibtargetBean"></property>
 		<property name="adviceName" type="proxyList">
 			<ref bean="beforeAdvice"></ref>
 			<ref bean="beforeAdvice2"></ref>
+		</property>
+	</bean>
+	<!-- Cglib后置代理对象 -->
+	<bean id="cglibBeanProxy2" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="after">
+		<property  name="targetBean" ref="cglibtargetBean"></property>
+		<!-- value只能用字符串的形式，接口不能实例化 -->
+		<property  name="adviceName" type="proxyList">
+			<ref bean="afterAdvice"></ref>
+			<ref bean="afterAdvice2"></ref>
+		</property>
+	</bean>
+	<!-- Cglib环绕代理对象 -->
+	<bean id="cglibBeanProxy3" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="around">
+		<property  name="targetBean" ref="cglibtargetBean"></property>
+		<!-- value只能用字符串的形式，接口不能实例化 -->
+		<property  name="adviceName" type="proxyList">
+			<ref bean="aroundAdvice"></ref>
+			<ref bean="aroundAdvice2"></ref>
 		</property>
 	</bean>
 </beans>

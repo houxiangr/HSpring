@@ -63,6 +63,7 @@ public class HSpringContext implements BeanFactory{
 		List<Property> propertys=bean.getPropertys();
 		for(Property property:propertys) {
 			Map<String,Object> mp=new HashMap<String,Object>();
+			Map<String,List<String>> mpmethod=new HashMap<String,List<String>>();
 			Map<String,List<Object>> mpList=new HashMap<String,List<Object>>();
 			//在配置文件中显示的设置了value则直接赋值
 			if(!property.getValue().equals("")) {
@@ -70,7 +71,8 @@ public class HSpringContext implements BeanFactory{
 				mp.put(property.getName(), property.getValue());
 				//将map中的键值映射到aimBeanObject类中去
 				BeanUtils.copyProperties( aimBeanObject, mp);
-			}else if(!property.getRef().equals("")) {
+			}
+			if(!property.getRef().equals("")) {
 				//获取引用的对象
 				Object ref=context.get(property.getRef());
 				//如果容器中没有此对象则递归调用此函数创建该类
@@ -80,7 +82,8 @@ public class HSpringContext implements BeanFactory{
 				mp.put(property.getName(), ref);
 				//将map中的键值映射到aimBeanObject类中去
 				BeanUtils.copyProperties( aimBeanObject, mp);
-			}else if(property.getProxyList()!=null) {
+			}
+			if(property.getProxyList()!=null) {
 				List<String> proxyList=property.getProxyList();
 				List<Object> objList=new ArrayList<Object>();
 				for(String proxyName:proxyList) {
@@ -95,6 +98,11 @@ public class HSpringContext implements BeanFactory{
 				mpList.put(property.getName(), objList);
 				//将map中的键值映射到aimBeanObject类中去
 				BeanUtils.copyProperties( aimBeanObject, mpList);
+			}
+			if(property.getMethod()!=null) {
+				List<String> methodList=property.getMethod();
+				mpmethod.put("methodsList",methodList);
+				BeanUtils.copyProperties(aimBeanObject, mpmethod);
 			}
 		}
 		if(clazz.equals(ProxyBeanFactory.class)) {

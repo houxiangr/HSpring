@@ -13,8 +13,15 @@ public class ProxyBeanFactory implements MethodInterceptor{
 	private Object targetBean=null;
 	private String targetInterface=null;
 	private List<Object> adviceName=null;
+	private List<String> methodsList=null;
 	private MethodImp interceptor=null;
 
+	public List<String> getMethodsList() {
+		return methodsList;
+	}
+	public void setMethodsList(List<String> methodsList) {
+		this.methodsList = methodsList;
+	}
 	public MethodImp getInterceptor() {
 		return interceptor;
 	}
@@ -62,7 +69,7 @@ public class ProxyBeanFactory implements MethodInterceptor{
                     public Object invoke(Object proxy, Method method, Object[] args) 
                     		throws Throwable {
                     	Object result=null;
-                    	result=interceptor.intercept(targetBean, method, args, null,adviceName);
+                    	result=interceptor.intercept(targetBean, method, args, null,adviceName,methodsList);
                     	return result;
                     }
                 });
@@ -84,7 +91,7 @@ public class ProxyBeanFactory implements MethodInterceptor{
     		Object[] args, MethodProxy proxy) throws Throwable {
 		Object result=null;
         //判断该通知在方法调用前执行
-    	result=interceptor.intercept(targetBean, method, args, null,adviceName);
+    	result=interceptor.intercept(targetBean, method, args, null,adviceName,methodsList);
     	return result;
     }
 }

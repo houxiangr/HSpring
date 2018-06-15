@@ -7,5 +7,5 @@ import net.sf.cglib.proxy.MethodProxy;
 
 public interface MethodImp {
 	public Object intercept(Object obj, Method method, Object[] args,
-			MethodProxy proxy,List<Object> advices) throws Throwable;
+			MethodProxy proxy,List<Object> advices,List<String> methodsList) throws Throwable;
 }
