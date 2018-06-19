@@ -55,13 +55,9 @@ public class ProxyBeanFactory implements MethodInterceptor{
 	}
 	//jdk代理创建代理对象
 	private Object createJdkProxy() {
+		Class<?> interfaces[] =targetBean.getClass().getInterfaces();
 		// TODO Auto-generated method stub
-		Class<?> clazz = null;
-	    try {
-	        clazz = Class.forName(targetInterface);// 实现的接口
-	    } catch (ClassNotFoundException e) {
-	        e.printStackTrace();
-	    }
+		Class<?> clazz = interfaces[0];
 		Object jdkProxy=Proxy.newProxyInstance(targetBean.getClass().getClassLoader(),
 				 new Class[] { clazz }, 
 				new InvocationHandler() {

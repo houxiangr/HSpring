@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-	<!-- <bean id="BeanA" class="Houxiang.ioc.test.BeanA">
-		<property name="property1" value="houxiangA"></property>
-	</bean>
-	<bean id="BeanB" class="Houxiang.ioc.test.BeanB">
-		<property name="propertyA" ref="BeanA"></property>
-		<property name="property1" value="houxiangB"></property>
-		<property name="property2" value="houxiangB2"></property>
-	</bean> -->
-	
  	<!-- Jdk代理实现目标对象 -->
 	<bean id="targetBean" class="HSpring.aop.test.TargetBean"></bean>
 	<!-- 前置通知对象1 -->
@@ -28,8 +19,6 @@
 		<property  name="targetBean" ref="targetBean" type="methodList">
 			<method methodname="show"></method>
 		</property>
-		<!-- value只能用字符串的形式，接口不能实例化 -->
-		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
 		<property  name="adviceName" type="proxyList">
 			<ref bean="beforeAdvice"></ref>
 			<ref bean="beforeAdvice2"></ref>
@@ -38,8 +27,6 @@
 	<!-- jdk后置代理对象 -->
 	<bean id="targetBeanProxy2" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="after">
 		<property  name="targetBean" ref="targetBean" method="show"></property>
-		<!-- value只能用字符串的形式，接口不能实例化 -->
-		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
 		<property  name="adviceName" type="proxyList">
 			<ref bean="afterAdvice"></ref>
 			<ref bean="afterAdvice2"></ref>
@@ -48,8 +35,6 @@
 	<!-- jdk环绕代理对象 -->
 	<bean id="targetBeanProxy3" class="HSpring.org.core.aop.ProxyBeanFactory" proxyType="around">
 		<property  name="targetBean" ref="targetBean" method="show"></property>
-		<!-- value只能用字符串的形式，接口不能实例化 -->
-		<property  name="targetInterface" value="HSpring.aop.test.TargetBeanImp"></property>
 		<property  name="adviceName" type="proxyList">
 			<ref bean="aroundAdvice"></ref>
 			<ref bean="aroundAdvice2"></ref>

@@ -15,12 +15,12 @@ public class RunAroundMethod implements MethodImp {
 		if(methodsList.contains(method.getName())) {
 			for(Object advice:advices) {
 	             // 在目标方法执行前执行前置通知代码
-	             ((MethodAroundAdvice)advice).before(method, args, obj);
+	             ((MethodAroundAdvice)advice).before();
 			}
 			result = method.invoke(obj, args);
 			for(Object advice:advices) {
 	            // 在目标方法执行前执行前置通知代码
-	            ((MethodAroundAdvice)advice).after(method, args, obj);
+	            ((MethodAroundAdvice)advice).after();
 			}
 		}else {
 			result = method.invoke(obj, args);
